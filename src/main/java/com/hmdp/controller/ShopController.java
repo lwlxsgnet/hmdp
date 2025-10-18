@@ -1,8 +1,6 @@
 package com.hmdp.controller;
 
-import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.hmdp.dto.Result;
 import com.hmdp.entity.Shop;
@@ -12,11 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import static com.hmdp.utils.RedisConstants.*;
 
 /**
  * <p>
