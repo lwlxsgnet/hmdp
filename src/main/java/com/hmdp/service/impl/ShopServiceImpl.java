@@ -36,11 +36,6 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
     @Resource
     private CacheClient cacheClient;
 
-    /**
-     * 缓存重建线程池
-     */
-    public static final ExecutorService CACHE_REBUILD_EXECUTOR = Executors.newFixedThreadPool(10);
-
     @Override
     public Result queryShopById(Long id) {
 //        // 调用解决缓存穿透的方法
