@@ -25,7 +25,7 @@ import static com.hmdp.utils.RedisConstants.SECKILL_VOUCHER_ORDER;
  *  服务实现类
  * </p>
  *
- * @author 虎哥
+ * @author lwl
  * @since 2021-12-22
  */
 @Service
@@ -43,7 +43,6 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
      * @param voucherId 秒杀券id
      * @return 订单id
      */
-    @Transactional
     @Override
     public Result seckillVoucher(Long voucherId) {
         // 1、查询秒杀券
@@ -62,11 +61,7 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         }
         // 3、创建订单
         Long userId = UserHolder.getUser().getId();
-        synchronized (userId.toString().intern()) {
-            // 创建代理对象，使用代理对象调用第三方事务方法， 防止事务失效
-            IVoucherOrderService proxy = (IVoucherOrderService) AopContext.currentProxy();
-            return proxy.createVoucherOrder(userId, voucherId);
-        }
+        return ((VoucherOrderServiceImpl) AopContext.currentProxy()).createVoucherOrder(userId, voucherId);
     }
 
     /**
@@ -78,7 +73,6 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
      */
     @Transactional
     public Result createVoucherOrder(Long userId, Long voucherId) {
-//        synchronized (userId.toString().intern()) {
         // 1、判断当前用户是否是第一单
         long count = this.count(new LambdaQueryWrapper<VoucherOrder>()
                 .eq(VoucherOrder::getUserId, userId));
@@ -106,6 +100,5 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
         }
         // 4、返回订单id
         return Result.ok(orderId);
-//        }
     }
 }
